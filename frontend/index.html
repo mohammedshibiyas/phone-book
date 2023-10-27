@@ -26,6 +26,7 @@
 
         label {
             display: block;
+            font-family: sans-serif;
             margin-bottom: 5px;
             color: #333;
         }
@@ -66,7 +67,7 @@
             display: flex;
         }
 
-        .edit-button {
+        .edit {
             background-color: #4CAF50;
             color: #fff;
             padding: 5px 10px;
@@ -76,7 +77,7 @@
             cursor: pointer;
         }
 
-        .delete-button {
+        .delete {
             background-color: #FF5733;
             color: #fff;
             padding: 5px 10px;
@@ -95,11 +96,12 @@
         <label for="contact">Contact:</label>
         <input type="text" id="contact" required>
         <br><br>
-        <button  onclick="" id="btn">Show Details</button>
+        <button  onclick=" getTask()" id="btn">Show Details</button>
     </form>
+   
     <div id="output">
-        
-    </div>
+     
+   </div>
   
     <script type="module">
        let btn=document.getElementById("btn");
@@ -127,7 +129,50 @@
         }).catch((error)=>{
             console.log(error);
         })
+
+        async function getTask(){
+            const task=await fetch("http://localhost:3007/api/getTask");
+            const data= await task.json();
+            console.log(data);
+            let s="";
+            data.map(dt=>{
+                s+=` <div class="card">
+            <div class="details-main">
+                <p>Name: ${dt.name}</p>
+                <p>Number: ${dt.number}</p>
+                <div class="btns">
+                    <button class="edit">EDIT</button>
+                    <button class="delete" onclick="delTask('${dt._id}')">DELETE</button>
+                </div>
+            </div>
+        </div>`
+            })
+            document.getElementById("output").innerHTML=s;
+
+        }
+        getTask();
+
+       
        })
+
+       function delTask(id){
+            
+
+            fetch(`http://localhost:3007/api/deltask/${id}`,{
+                method:"DELETE",
+            }).then((data)=>{
+                if(data.status==200){
+                    alert("Deleted")
+                }
+                else{
+                    alert("error")
+                }
+                getTask();
+            }).catch((error)=>{
+                console.log(error);
+            })
+        }
+       
     </script>
 </body>
 </html>
