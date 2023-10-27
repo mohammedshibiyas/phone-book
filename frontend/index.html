@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Box Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+        }
+
+        #detailsForm {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #0074d9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .card {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-buttons {
+            display: flex;
+        }
+
+        .edit-button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            background-color: #FF5733;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Details</h1>
+    <form id="detailsForm">
+        <label for="name"> Name:</label>
+        <input type="text" id="name" required>
+        <br><br>
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" required>
+        <br><br>
+        <button  onclick="" id="btn">Show Details</button>
+    </form>
+    <div id="output">
+        
+    </div>
+  
+    <script type="module">
+       let btn=document.getElementById("btn");
+       document.getElementById("detailsForm").addEventListener("submit",async(e)=>{
+        e.preventDefault();
+        console.log(e);
+
+        let name=document.getElementById("name").value;
+        let number=document.getElementById("contact").value;
+
+        fetch("http://localhost:3007/api/display",{
+            method:"POST",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify({
+            name,
+            number
+        })
+        }).then((res)=>{
+           if(res.status==201){
+            alert("details added")
+           }
+           else{
+            alert("not added")
+           }
+        }).catch((error)=>{
+            console.log(error);
+        })
+       })
+    </script>
+</body>
+</html>
